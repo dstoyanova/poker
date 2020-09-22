@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>This poll has been created private.</p>
+<p>Enter access code to be able to vote.</p>
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="form-group row">
+        <label for="id_access_code" class="col-sm-2 col-form-label">Access code:</label>
+        <div class="col-sm-4">
+            <input class="form-control" type="text" name="access_code" maxlength="128" required="" id="id_access_code">
+        </div>
+    </div>
+
+    <input class="btn btn-primary btn-sm" type="submit" value="Join">
+</form>
+{% endblock %}

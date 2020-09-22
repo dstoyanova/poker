@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if session.description %}
+<div class="description-box">
+    {{ session.description }}
+</div>
+{% endif %}
+{% if vote %}
+<p>You have already voted with <b>{{ vote.vote_value }}</b> for this session.</p>
+<p>Select a different option from the list below to change your vote.</p>
+
+<form method="POST" action="{% url 'update_vote' vote.pk %}">
+    {% csrf_token %}
+
+    {% for card in cards %}
+    <div class="form-check">
+        {% if vote.vote_value == card %}
+        <input class="form-check-input" type="radio" name="vote" id="id_vote_checked_1" value="{{ card }}" checked>
+        <label class="form-check-label" for="id_vote_checked_1">
+            {{ card }}
+        </label>
+        {% else %}
+        <input class="form-check-input" type="radio" name="vote" id="id_vote_1" value="{{ card }}">
+        <label class="form-check-label" for="id_vote_1">
+            {{ card }}
+        </label>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <input type="submit" style="margin-top: 15px;" class="btn btn-primary btn-sm" value="Vote">
+</form>
+{% else %}
+<form method="POST" action="{% url 'save_vote' session.pk %}">
+    {% csrf_token %}
+
+    {% for card in cards %}
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="vote" id="id_vote" value="{{ card }}">
+        <label class="form-check-label" for="id_vote">
+            {{ card }}
+        </label>
+    </div>
+    {% endfor %}
+
+    <input type="submit" style="margin-top: 15px;" class="btn btn-primary btn-sm" value="Vote">
+</form>
+{% endif%}
+
+{% endblock %}

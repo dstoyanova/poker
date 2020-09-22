@@ -1,0 +1,47 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Planning Poker</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'poker.css' %}" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+</head>
+
+<body>
+
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <h5 class="my-0 mr-md-auto font-weight-normal">Planning Poker</h5>
+    <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="{% url 'index' %}">Polls</a>
+    </nav>
+    {% if request.user.is_authenticated %}
+    <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="{% url 'create' %}">Create new</a>
+    </nav>
+    <a style="margin-right: 32px; margin-left: 16px;">Signed in as <b>{{ request.user }}</b></a>
+    <a class="btn btn-outline-primary" href="{% url 'logout' %}">Sign off</a>
+    {% else %}
+    <a class="btn btn-outline-primary" href="{% url 'login' %}">Sign in</a>
+    {% endif %}
+</div>
+
+<div class="container">
+    <div class="mb-3">
+        {% block content %} {% endblock content %}
+    </div>
+</div>
+{% block scripts %} {% endblock scripts %}
+</body>
+</html>

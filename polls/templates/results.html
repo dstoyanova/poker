@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3 style="margin-bottom: 30px;">Results for <b>{{ session.name }}</b></h3>
+<canvas id="id_results" data-url="{% url 'results_ajax' session.pk %}"></canvas>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(function () {
+  var $resultsChart = $("#id_results");
+
+  $.ajax({
+    url: $resultsChart.data("url"),
+    success: function (data) {
+      var ctx = $resultsChart[0].getContext("2d");
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.labels,
+          datasets: [{
+            label: 'Votes',
+            backgroundColor: '#FCF3CF',
+            data: data.data
+          }]
+        },
+        options: {
+          responsive: true,
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Number of votes per card'
+          },
+          scales: {
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Number of votes'
+                },
+                ticks: {
+                    precision: 0,
+                }
+            }],
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Card'
+                }
+            }]
+          }
+        }
+      });
+    }
+  });
+});
+</script>
+{% endblock scripts%}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 style="margin-bottom: 20px;">Active Polls</h2>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col" style="text-align: center;">Created by</th>
+        <th scope="col" style="text-align: center;">Name</th>
+        <th scope="col" style="text-align: center;">Access</th>
+        <th scope="col" style="text-align: center;">Cards</th>
+        <th scope="col" style="text-align: center;">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for session in objects %}
+    <tr>
+        <th scope="row">{{ session.pk }}</th>
+        <td style="text-align: center;">{{ session.user }}</td>
+        <td style="text-align: center;">{{ session.name }}</td>
+        <td style="text-align: center;">{{ session.access }}</td>
+        <td style="text-align: center;">{{ session.cards }}</td>
+        <td style="text-align: center;">
+            <a type="button" class="btn btn-light" href="{% url 'results' session.pk %}">Results</a>
+            {% if session.access == 'Private' and session.user != request.user %}
+            <a type="button" class="btn btn-warning" href="{% url 'join' session.pk %}">Vote</a>
+            {% else %}
+            <a type="button" class="btn btn-warning" href="{% url 'vote' session.pk %}">Vote</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor%}
+    </tbody>
+</table>
+{% endblock %}
